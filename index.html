@@ -8,46 +8,59 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #000; --accent: #fff; --gray: #222; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--accent); margin: 0; padding: 0; text-transform: uppercase; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--accent); margin: 0; text-transform: uppercase; overflow-x: hidden; }
 
-        /* PRELOADER */
-        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; z-index: 10000; transition: 0.6s ease; }
-        #preloader.done { opacity: 0; visibility: hidden; display: none !important; }
-        .loader-text { font-family: 'Great Vibes', cursive; font-size: 3rem; text-transform: none; color: #fff; }
+        /* --- ЕФЕКТ ПРИ ЗАПУСКУ (З БЛЮРОМ) --- */
+        #preloader { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.7); 
+            display: flex; align-items: center; justify-content: center; 
+            z-index: 10000; transition: 0.8s ease; 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+        }
+        #preloader.done { opacity: 0; visibility: hidden; pointer-events: none; }
+        
+        .loader-text { 
+            font-family: 'Great Vibes', cursive; font-size: 3.5rem; text-transform: none; 
+            background: linear-gradient(to right, #444 20%, #fff 40%, #fff 60%, #444 80%);
+            background-size: 200% auto; -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; animation: shine 2s linear infinite; 
+        }
+        @keyframes shine { to { background-position: 200% center; } }
 
         /* HEADER */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #000; border-bottom: 1px solid var(--gray); position: sticky; top: 0; z-index: 5000; height: 65px; box-sizing: border-box; }
-        .logo { font-size: 1.2rem; font-weight: 900; letter-spacing: 2px; cursor: pointer; }
-        .header-right { display: flex; gap: 5px; }
-        .btn-icon { background: none; border: none; color: #fff; padding: 12px; cursor: pointer; font-size: 1.2rem; position: relative; }
-        .badge { position: absolute; top: 5px; right: 5px; background: #fff; color: #000; font-size: 0.6rem; width: 16px; height: 16px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-weight: 900; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: #000; border-bottom: 1px solid var(--gray); position: sticky; top: 0; z-index: 5000; }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 3px; cursor: pointer; }
+        
+        .header-right { display: flex; gap: 15px; }
+        .header-right i { cursor: pointer; font-size: 1.2rem; position: relative; }
+        .badge { position: absolute; top: -8px; right: -8px; background: #fff; color: #000; font-size: 0.6rem; width: 15px; height: 15px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-weight: 900; }
 
-        /* SEARCH SECTION */
-        #search-box { display: none; background: #000; border-bottom: 1px solid var(--gray); padding: 15px 20px; }
-        #search-input { width: 100%; background: #111; border: 1px solid #333; padding: 12px; color: #fff; text-transform: uppercase; outline: none; box-sizing: border-box; }
+        /* SIDEBAR */
+        .sidebar { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: #000; z-index: 7000; transition: 0.4s; padding: 60px 30px; border-right: 1px solid var(--gray); }
+        .sidebar.active { left: 0; }
+        .sidebar p { cursor: pointer; margin-bottom: 25px; font-weight: 700; }
 
-        /* SIDE PANELS */
-        .side-panel { position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%; background: #000; z-index: 6000; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-left: 1px solid var(--gray); padding: 30px; box-sizing: border-box; overflow-y: auto; }
+        /* ПАНЕЛІ КOШИКА ТА ОБРАНОГО */
+        .side-panel { position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%; background: #000; z-index: 7000; transition: 0.4s ease; border-left: 1px solid var(--gray); padding: 30px; box-sizing: border-box; }
         .side-panel.active { right: 0; }
-        .close-btn { text-align: right; font-size: 1.5rem; cursor: pointer; margin-bottom: 20px; }
-        .panel-title { font-size: 1rem; font-weight: 900; border-bottom: 1px solid var(--gray); padding-bottom: 10px; margin-bottom: 20px; }
 
-        /* CART ITEMS STYLE */
-        .cart-item { display: flex; gap: 15px; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #111; }
-        .cart-item img { width: 60px; height: 80px; object-fit: cover; }
-        .cart-item-info { flex-grow: 1; }
-        .cart-item-name { font-size: 0.8rem; font-weight: 700; margin-bottom: 5px; }
-        .cart-item-price { font-size: 0.9rem; font-weight: 900; }
-        .remove-btn { color: #555; cursor: pointer; padding: 5px; }
+        /* ВКЛАДКИ (НОВИНКИ / РОЗПРОДАЖ) */
+        .tabs { display: flex; justify-content: center; gap: 30px; margin: 30px 0; }
+        .tab-btn { background: none; border: none; color: #444; font-weight: 900; cursor: pointer; font-size: 1rem; letter-spacing: 1px; }
+        .tab-btn.active { color: #fff; border-bottom: 2px solid #fff; }
 
-        /* SHOP CONTENT */
-        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; padding: 20px; }
-        .product-card { border: 1px solid #111; text-align: center; background: #050505; transition: 0.3s; }
-        .product-card:hover { border-color: #333; }
+        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 20px; }
+        .product-card { background: #000; border: 1px solid #111; text-align: center; }
         .product-card img { width: 100%; height: 400px; object-fit: cover; }
-        .product-meta { padding: 20px; }
         .buy-btn { background: #fff; color: #000; border: none; width: 100%; padding: 15px; cursor: pointer; font-weight: 900; margin-top: 15px; }
-        .empty-msg { color: #444; font-size: 0.8rem; text-align: center; margin-top: 50px; letter-spacing: 2px; }
+
+        /* МОДАЛКА */
+        #order-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 8000; align-items: center; justify-content: center; }
+        .modal-content { background: #000; padding: 30px; border: 1px solid #222; width: 90%; max-width: 350px; text-align: center; }
+        .modal-content input { width: 100%; padding: 12px; margin: 8px 0; background: #111; border: 1px solid #333; color: #fff; box-sizing: border-box; }
     </style>
 </head>
 <body>
@@ -55,73 +68,81 @@
     <div id="preloader"><div class="loader-text">North Park</div></div>
 
     <header>
-        <div class="logo" onclick="location.reload()">NORTH PARK</div>
+        <div class="header-left">
+            <i class="fas fa-bars" onclick="toggleSidebar()"></i>
+            <div class="logo" onclick="location.reload()">NORTH PARK</div>
+        </div>
         <div class="header-right">
-            <button class="btn-icon" onclick="toggleSearch()"><i class="fas fa-search"></i></button>
-            <button class="btn-icon" onclick="openPanel('wish-panel')"><i class="fas fa-heart"></i></button>
-            <button class="btn-icon" onclick="openPanel('cart-panel')">
-                <i class="fas fa-shopping-cart"></i>
-                <span id="cart-badge" class="badge">0</span>
-            </button>
+            <i class="fas fa-search" onclick="alert('Пошук...')"></i>
+            <i class="fas fa-heart" onclick="togglePanel('wish-panel')"><span id="wish-count" class="badge">0</span></i>
+            <i class="fas fa-shopping-cart" onclick="togglePanel('cart-panel')"><span id="cart-count" class="badge">0</span></i>
         </div>
     </header>
 
-    <div id="search-box">
-        <input type="text" id="search-input" placeholder="ШУКАТИ МОДЕЛЬ..." oninput="filterProducts()">
+    <div id="sidebar" class="sidebar">
+        <div onclick="toggleSidebar()" style="text-align:right; cursor:pointer; margin-bottom:30px;"><i class="fas fa-times"></i></div>
+        <p onclick="alert('North Park — твій стиль')">ПРО НАС</p>
+        <p onclick="alert('Відгуки')">ВІДГУКИ</p>
     </div>
 
-    <div class="container" id="product-container"></div>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="changeCategory('new', this)">НОВИНКИ</button>
+        <button class="tab-btn" onclick="changeCategory('sale', this)">РОЗПРОДАЖ</button>
+    </div>
+
+    <div class="container" id="box"></div>
 
     <div id="cart-panel" class="side-panel">
-        <div class="close-btn" onclick="closePanel('cart-panel')"><i class="fas fa-times"></i></div>
-        <div class="panel-title">ТВІЙ КОШИК</div>
+        <div onclick="togglePanel('cart-panel')" style="text-align:right; cursor:pointer;"><i class="fas fa-times"></i></div>
+        <h2>КОШИК</h2>
         <div id="cart-list"></div>
-        <div id="cart-total" style="margin-top: 20px; font-weight: 900; display: none;"></div>
-        <button class="buy-btn" id="checkout-btn" style="display: none;" onclick="alert('Замовлення відправлено!')">ОФОРМИТИ</button>
+        <button class="buy-btn" id="order-btn" style="display:none;" onclick="openOrderModal()">ОФОРМИТИ ЗАМОВЛЕННЯ</button>
     </div>
 
     <div id="wish-panel" class="side-panel">
-        <div class="close-btn" onclick="closePanel('wish-panel')"><i class="fas fa-times"></i></div>
-        <div class="panel-title">ОБРАНЕ</div>
-        <div class="empty-msg">ТУТ ПОКИ ПОРОЖНЬО</div>
+        <div onclick="togglePanel('wish-panel')" style="text-align:right; cursor:pointer;"><i class="fas fa-times"></i></div>
+        <h2>ОБРАНЕ</h2>
+    </div>
+
+    <div id="order-modal">
+        <div class="modal-content">
+            <h2>ОФОРМЛЕННЯ</h2>
+            <input type="text" id="u-name" placeholder="ІМ'Я">
+            <input type="text" id="u-phone" placeholder="ТЕЛЕФОН">
+            <input type="text" id="u-city" placeholder="МІСТО / НП">
+            <button class="buy-btn" onclick="sendToTelegram()">ВІДПРАВИТИ</button>
+        </div>
     </div>
 
     <script>
-        // База товарів
+        const BOT_TOKEN = '8469565804:AAH7DZFzs41vH3qSpe_ZD0VhwmThAJHlVhs';
+        const CHAT_ID = '8609029382';
+
         const products = [
-            { id: 1, name: "Hoodie Graphite", price: 1450, img: "https://via.placeholder.com/600x800/111/fff?text=NORTH+PARK" },
-            { id: 2, name: "Tech Cargo Pants", price: 1800, img: "https://via.placeholder.com/600x800/111/fff?text=NORTH+PARK" },
-            { id: 3, name: "Oversize T-Shirt White", price: 750, img: "https://via.placeholder.com/600x800/111/fff?text=NORTH+PARK" }
+            { id: 1, name: "Hoodie Graphite", price: 1450, cat: "new", img: "https://via.placeholder.com/600x800/111/fff?text=NEW+DROP" },
+            { id: 2, name: "Tech Joggers", price: 1200, cat: "new", img: "https://via.placeholder.com/600x800/111/fff?text=NEW+DROP" },
+            { id: 3, name: "Sale T-Shirt", price: 750, cat: "sale", img: "https://via.placeholder.com/600x800/111/fff?text=SALE" }
         ];
 
         let cart = [];
 
-        // 1. ПРИБИРАЄМО ПРЕЛOАДЕР
-        window.addEventListener('load', () => {
-            setTimeout(() => document.getElementById('preloader').classList.add('done'), 1000);
-            renderProducts(products);
-        });
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('done');
+            }, 1200);
+            show('new');
+        };
 
-        // 2. ПОШУК (ФІЛЬТРАЦІЯ)
-        function toggleSearch() {
-            const box = document.getElementById('search-box');
-            box.style.display = box.style.display === 'block' ? 'none' : 'block';
-        }
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+        function togglePanel(id) { document.getElementById(id).classList.toggle('active'); }
 
-        function filterProducts() {
-            const query = document.getElementById('search-input').value.toLowerCase();
-            const filtered = products.filter(p => p.name.toLowerCase().includes(query));
-            renderProducts(filtered);
-        }
-
-        // 3. ВІДОБРАЖЕННЯ ТОВАРІВ
-        function renderProducts(list) {
-            const container = document.getElementById('product-container');
-            container.innerHTML = list.map(p => `
+        function show(cat) {
+            const box = document.getElementById('box');
+            box.innerHTML = products.filter(p => p.cat === cat).map(p => `
                 <div class="product-card">
                     <img src="${p.img}">
-                    <div class="product-meta">
-                        <div style="font-weight:700;">${p.name}</div>
+                    <div style="padding:15px;">
+                        <div>${p.name}</div>
                         <div style="font-weight:900; margin:10px 0;">${p.price} UAH</div>
                         <button class="buy-btn" onclick="addToCart(${p.id})">У КОШИК</button>
                     </div>
@@ -129,54 +150,42 @@
             `).join('');
         }
 
-        // 4. КОШИК (ЛОГІКА)
-        function openPanel(id) { document.getElementById(id).classList.add('active'); }
-        function closePanel(id) { document.getElementById(id).classList.remove('active'); }
+        function changeCategory(cat, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            show(cat);
+        }
 
         function addToCart(id) {
-            const product = products.find(p => p.id === id);
-            cart.push(product);
-            updateCartUI();
-            openPanel('cart-panel');
+            cart.push(products.find(p => p.id === id));
+            updateUI();
+            togglePanel('cart-panel');
         }
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCartUI();
+        function updateUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            document.getElementById('cart-count').style.display = cart.length > 0 ? 'flex' : 'none';
+            document.getElementById('cart-list').innerHTML = cart.map(i => `<div style="padding:10px; border-bottom:1px solid #111;">${i.name} - ${i.price} UAH</div>`).join('');
+            document.getElementById('order-btn').style.display = cart.length > 0 ? 'block' : 'none';
         }
 
-        function updateCartUI() {
-            const cartList = document.getElementById('cart-list');
-            const badge = document.getElementById('cart-badge');
-            const totalDiv = document.getElementById('cart-total');
-            const checkoutBtn = document.getElementById('checkout-btn');
+        function openOrderModal() { togglePanel('cart-panel'); document.getElementById('order-modal').style.display = 'flex'; }
 
-            badge.innerText = cart.length;
-            badge.style.display = cart.length > 0 ? 'flex' : 'none';
+        function sendToTelegram() {
+            const n = document.getElementById('u-name').value;
+            const p = document.getElementById('u-phone').value;
+            const c = document.getElementById('u-city').value;
+            let msg = `🏔 ЗАМОВЛЕННЯ\nКлієнт: ${n}\nТел: ${p}\nНП: ${c}\nТовари:\n` + cart.map(i => `- ${i.name}`).join('\n');
 
-            if (cart.length === 0) {
-                cartList.innerHTML = '<div class="empty-msg">ТВІЙ КОШИК ПОРОЖНІЙ</div>';
-                totalDiv.style.display = 'none';
-                checkoutBtn.style.display = 'none';
-            } else {
-                let total = 0;
-                cartList.innerHTML = cart.map((p, index) => {
-                    total += p.price;
-                    return `
-                        <div class="cart-item">
-                            <img src="${p.img}">
-                            <div class="cart-item-info">
-                                <div class="cart-item-name">${p.name}</div>
-                                <div class="cart-item-price">${p.price} UAH</div>
-                            </div>
-                            <div class="remove-btn" onclick="removeFromCart(${index})"><i class="fas fa-times"></i></div>
-                        </div>
-                    `;
-                }).join('');
-                totalDiv.innerText = `СУМА: ${total} UAH`;
-                totalDiv.style.display = 'block';
-                checkoutBtn.style.display = 'block';
-            }
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: msg })
+            }).then(() => {
+                alert("ДЯКУЄМО! ЗАМОВЛЕННЯ ВІДПРАВЛЕНО.");
+                cart = []; updateUI();
+                document.getElementById('order-modal').style.display = 'none';
+            });
         }
     </script>
 </body>
