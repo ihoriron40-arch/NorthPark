@@ -5,72 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NORTH PARK | Official Store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #000; --accent: #fff; --gray: #111; --border: #222; --muted: #666; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--accent); margin: 0; text-transform: uppercase; letter-spacing: 1px; }
+        :root { --bg: #000; --accent: #fff; --gray: #111; --border: #222; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--accent); margin: 0; text-transform: uppercase; overflow-x: hidden; }
 
-        /* --- PRELOADER --- */
-        #preloader { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10000; transition: 1s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
-        #preloader.done { opacity: 0; visibility: hidden; }
-        .loader-text { font-family: 'Great Vibes', cursive; font-size: 4rem; text-transform: none; color: #fff; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
+        /* PRELOADER */
+        #preloader { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10000; transition: 0.8s ease; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
+        #preloader.done { opacity: 0; visibility: hidden; pointer-events: none; }
+        .loader-text { font-family: 'Great Vibes', cursive; font-size: 3.5rem; text-transform: none; background: linear-gradient(90deg, #444, #fff, #444); background-size: 200%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: shine 2s linear infinite; }
+        @keyframes shine { to { background-position: 200% center; } }
 
-        /* --- HEADER --- */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 4%; background: #000; position: sticky; top: 0; z-index: 5000; border-bottom: 1px solid var(--border); height: 70px; }
-        .header-left, .header-right { display: flex; align-items: center; gap: 25px; }
-        .logo { font-size: 1.6rem; font-weight: 900; letter-spacing: 5px; cursor: pointer; }
-        .header-right i { cursor: pointer; font-size: 1.3rem; transition: 0.3s; position: relative; }
-        .header-right i:hover { opacity: 0.6; }
-        .badge { position: absolute; top: -10px; right: -12px; background: #fff; color: #000; font-size: 0.65rem; width: 18px; height: 18px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-weight: 900; }
+        /* HEADER */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: #000; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 5000; }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 3px; cursor: pointer; }
+        .header-right { display: flex; gap: 15px; }
+        .header-right i { cursor: pointer; font-size: 1.2rem; position: relative; }
+        .badge { position: absolute; top: -8px; right: -8px; background: #fff; color: #000; font-size: 0.6rem; width: 15px; height: 15px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-weight: 900; }
 
-        /* --- SIDEBAR --- */
-        .sidebar { position: fixed; top: 0; left: -100%; width: 100%; max-width: 320px; height: 100%; background: #000; z-index: 7000; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); padding: 80px 40px; border-right: 1px solid var(--border); }
+        /* SIDEBAR + СОЦМЕРЕЖІ */
+        .sidebar { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: #000; z-index: 7000; transition: 0.4s; padding: 60px 30px; border-right: 1px solid var(--border); }
         .sidebar.active { left: 0; }
-        .sidebar p { cursor: pointer; margin-bottom: 30px; font-weight: 300; font-size: 1.1rem; transition: 0.3s; }
-        .sidebar p:hover { padding-left: 10px; color: var(--muted); }
+        .sidebar p { cursor: pointer; margin-bottom: 25px; font-weight: 700; }
+        .social-links { display: flex; gap: 20px; margin-top: 40px; font-size: 1.5rem; }
+        .social-links a { color: #fff; text-decoration: none; transition: 0.3s; }
+        .social-links a:hover { opacity: 0.6; }
 
-        /* --- TABS --- */
-        .tabs { display: flex; justify-content: center; gap: 50px; margin: 40px 0 20px; }
-        .tab-btn { background: none; border: none; color: var(--muted); font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: 0.4s; padding-bottom: 8px; border-bottom: 2px solid transparent; }
+        /* ПАНЕЛІ КOШИКА */
+        .side-panel { position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%; background: #000; z-index: 7000; transition: 0.4s ease; border-left: 1px solid var(--border); padding: 30px; box-sizing: border-box; }
+        .side-panel.active { right: 0; }
+
+        /* ТОВАРИ */
+        .tabs { display: flex; justify-content: center; gap: 30px; margin: 30px 0; }
+        .tab-btn { background: none; border: none; color: #444; font-weight: 900; cursor: pointer; font-size: 1rem; }
         .tab-btn.active { color: #fff; border-bottom: 2px solid #fff; }
 
-        /* --- PRODUCTS GRID --- */
-        .container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px; max-width: 1400px; margin: 0 auto; }
-        @media (min-width: 900px) { .container { grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 40px; } }
-
-        .product-card { background: transparent; overflow: hidden; }
-        .img-wrap { position: relative; overflow: hidden; width: 100%; aspect-ratio: 3/4; background: #0a0a0a; }
-        .product-card img { width: 100%; height: 100%; object-fit: cover; transition: 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
-        .product-card:hover img { transform: scale(1.08); }
+        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 20px; }
+        .product-card { background: #000; border: 1px solid #111; text-align: center; padding-bottom: 20px; }
+        .product-card img { width: 100%; height: 400px; object-fit: cover; }
         
-        .product-info { padding: 20px 0; text-align: left; }
-        .product-name { font-size: 0.85rem; font-weight: 300; margin-bottom: 10px; color: #eee; }
-        .product-price { font-size: 1.1rem; font-weight: 900; margin-bottom: 20px; }
-
-        .size-picker { display: flex; gap: 10px; margin-bottom: 20px; }
-        .size-btn { border: 1px solid #333; background: none; color: #fff; width: 35px; height: 35px; font-size: 0.75rem; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+        /* РОЗМІРИ */
+        .size-picker { display: flex; justify-content: center; gap: 10px; margin: 15px 0; }
+        .size-btn { border: 1px solid #333; background: none; color: #fff; padding: 5px 12px; cursor: pointer; font-size: 0.8rem; }
         .size-btn.selected { background: #fff; color: #000; border-color: #fff; }
 
-        .buy-btn { background: #fff; color: #000; border: none; width: 100%; padding: 16px; cursor: pointer; font-weight: 900; font-size: 0.8rem; transition: 0.4s; }
-        .buy-btn:hover { background: #ddd; }
+        .buy-btn { background: #fff; color: #000; border: none; width: 90%; padding: 15px; cursor: pointer; font-weight: 900; }
 
-        /* --- SIDE PANELS --- */
-        .side-panel { position: fixed; top: 0; right: -100%; width: 100%; max-width: 450px; height: 100%; background: #000; z-index: 7000; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); border-left: 1px solid var(--border); padding: 50px 30px; box-sizing: border-box; overflow-y: auto; }
-        .side-panel.active { right: 0; }
-        .panel-close { text-align: right; cursor: pointer; font-size: 1.5rem; margin-bottom: 40px; }
-
-        .cart-item { display: flex; gap: 20px; margin-bottom: 30px; align-items: center; }
-        .cart-item img { width: 80px; height: 100px; object-fit: cover; }
-        .cart-item-info { flex-grow: 1; }
-
-        /* --- MODAL --- */
-        #order-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: #000; padding: 50px 30px; border: 1px solid var(--border); width: 100%; max-width: 400px; text-align: center; }
-        .modal-content input { width: 100%; padding: 18px; margin: 12px 0; background: #0a0a0a; border: 1px solid #222; color: #fff; outline: none; font-size: 0.9rem; }
-        .modal-content input:focus { border-color: #555; }
-
-        footer { padding: 80px 20px; text-align: center; color: #333; font-size: 0.7rem; border-top: 1px solid #111; }
+        #order-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 8000; align-items: center; justify-content: center; }
+        .modal-content { background: #000; padding: 30px; border: 1px solid var(--border); width: 90%; max-width: 350px; text-align: center; }
+        .modal-content input { width: 100%; padding: 12px; margin: 8px 0; background: #111; border: 1px solid #333; color: #fff; box-sizing: border-box; outline: none; }
     </style>
 </head>
 <body>
@@ -90,10 +74,14 @@
     </header>
 
     <div id="sidebar" class="sidebar">
-        <div class="panel-close" onclick="toggleSidebar()"><i class="fas fa-times"></i></div>
-        <p onclick="alert('North Park — Нове покоління вуличного одягу')">BRAND PHILOSOPHY</p>
-        <p onclick="alert('Доставка 1-3 дні Новою Поштою')">SHIPPING & RETURNS</p>
-        <p onclick="window.open('https://instagram.com/northpark.shop')">INSTAGRAM</p>
+        <div onclick="toggleSidebar()" style="text-align:right; cursor:pointer; margin-bottom:30px;"><i class="fas fa-times"></i></div>
+        <p onclick="alert('North Park Store')">ПРО НАС</p>
+        <p onclick="alert('Відгуки')">ВІДГУКИ</p>
+        <p onclick="alert('Контакти')">КОНТАКТИ</p>
+        <div class="social-links">
+            <a href="https://instagram.com/northpark.shop" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://tiktok.com/@northpark.shop2" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
     </div>
 
     <div class="tabs">
@@ -104,40 +92,35 @@
     <div class="container" id="box"></div>
 
     <div id="cart-panel" class="side-panel">
-        <div class="panel-close" onclick="togglePanel('cart-panel')"><i class="fas fa-times"></i></div>
-        <h2 style="font-weight: 900; margin-bottom: 40px;">SHOPPING BAG</h2>
+        <div onclick="togglePanel('cart-panel')" style="text-align:right; cursor:pointer;"><i class="fas fa-times"></i></div>
+        <h2 style="margin-bottom:20px;">КОШИК</h2>
         <div id="cart-list"></div>
-        <div id="total-price" style="margin-top: 40px; font-weight: 900; font-size: 1.4rem; display: none; border-top: 1px solid #111; padding-top: 20px;"></div>
-        <button class="buy-btn" id="order-btn" style="display:none; margin-top: 30px;" onclick="openOrderModal()">ОФОРМИТИ ЗАМОВЛЕННЯ</button>
+        <button class="buy-btn" id="order-btn" style="display:none; margin-top:20px;" onclick="openOrderModal()">ОФОРМИТИ ЗАМОВЛЕННЯ</button>
     </div>
 
     <div id="wish-panel" class="side-panel">
-        <div class="panel-close" onclick="togglePanel('wish-panel')"><i class="fas fa-times"></i></div>
-        <h2>WISHLIST</h2>
-        <p style="color:#333; font-size: 0.8rem;">Тут з’являться ваші улюблені речі</p>
+        <div onclick="togglePanel('wish-panel')" style="text-align:right; cursor:pointer;"><i class="fas fa-times"></i></div>
+        <h2>ОБРАНЕ</h2>
     </div>
 
     <div id="order-modal">
         <div class="modal-content">
-            <h2 style="margin-bottom: 30px; font-weight: 900;">CHECKOUT</h2>
-            <input type="text" id="u-name" placeholder="FULL NAME">
-            <input type="text" id="u-phone" placeholder="PHONE NUMBER">
-            <input type="text" id="u-city" placeholder="CITY / POST OFFICE">
-            <button class="buy-btn" onclick="sendToTelegram()" style="margin-top: 20px;">CONFIRM ORDER</button>
-            <p onclick="document.getElementById('order-modal').style.display='none'" style="cursor:pointer; margin-top:25px; font-size:0.7rem; color:#444;">CANCEL</p>
+            <h2 style="margin-bottom:20px;">ОФОРМЛЕННЯ</h2>
+            <input type="text" id="u-name" placeholder="ІМ'Я">
+            <input type="text" id="u-phone" placeholder="ТЕЛЕФОН">
+            <input type="text" id="u-city" placeholder="МІСТО / НП">
+            <button class="buy-btn" onclick="sendToTelegram()">ВІДПРАВИТИ</button>
         </div>
     </div>
-
-    <footer>© 2026 NORTH PARK CREATIVE STUDIO. ALL RIGHTS RESERVED.</footer>
 
     <script>
         const BOT_TOKEN = '8469565804:AAH7DZFzs41vH3qSpe_ZD0VhwmThAJHlVhs';
         const CHAT_ID = '8609029382';
 
         const products = [
-            { id: 1, name: "HOODIE 'ARCH' GRAPHITE", price: 1450, cat: "new", img: "https://via.placeholder.com/600x800/111/fff?text=NORTH+PARK" },
-            { id: 2, name: "JOGGERS 'NIGHT' TECH", price: 1200, cat: "new", img: "https://via.placeholder.com/600x800/111/fff?text=NORTH+PARK" },
-            { id: 3, name: "T-SHIRT 'RAW' WHITE", price: 750, cat: "sale", img: "https://via.placeholder.com/600x800/111/fff?text=SALE" }
+            { id: 1, name: "Hoodie Graphite", price: 1450, cat: "new", img: "https://via.placeholder.com/600x800/111/fff?text=NORTH+PARK" },
+            { id: 2, name: "Joggers Night", price: 1200, cat: "new", img: "https://via.placeholder.com/600x800/111/fff?text=NORTH+PARK" },
+            { id: 3, name: "Sale T-Shirt", price: 750, cat: "sale", img: "https://via.placeholder.com/600x800/111/fff?text=SALE" }
         ];
 
         let cart = [];
@@ -151,8 +134,8 @@
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
         function togglePanel(id) { document.getElementById(id).classList.toggle('active'); }
 
-        function selectSize(productId, size, btn) {
-            selectedSizes[productId] = size;
+        function selectSize(id, size, btn) {
+            selectedSizes[id] = size;
             const card = btn.closest('.product-card');
             card.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
@@ -162,17 +145,17 @@
             const box = document.getElementById('box');
             box.innerHTML = products.filter(p => p.cat === cat).map(p => `
                 <div class="product-card">
-                    <div class="img-wrap"><img src="${p.img}"></div>
-                    <div class="product-info">
-                        <div class="product-name">${p.name}</div>
-                        <div class="product-price">${p.price} UAH</div>
+                    <img src="${p.img}">
+                    <div style="padding:15px;">
+                        <div style="font-weight:700;">${p.name}</div>
+                        <div style="font-weight:900; margin:10px 0;">${p.price} UAH</div>
                         <div class="size-picker">
                             <button class="size-btn" onclick="selectSize(${p.id}, 'S', this)">S</button>
                             <button class="size-btn" onclick="selectSize(${p.id}, 'M', this)">M</button>
                             <button class="size-btn" onclick="selectSize(${p.id}, 'L', this)">L</button>
                             <button class="size-btn" onclick="selectSize(${p.id}, 'XL', this)">XL</button>
                         </div>
-                        <button class="buy-btn" onclick="addToCart(${p.id})">ADD TO BAG</button>
+                        <button class="buy-btn" onclick="addToCart(${p.id})">У КОШИК</button>
                     </div>
                 </div>
             `).join('');
@@ -185,49 +168,30 @@
         }
 
         function addToCart(id) {
-            if (!selectedSizes[id]) { alert("PLEASE SELECT SIZE"); return; }
-            const product = {...products.find(p => p.id === id), size: selectedSizes[id]};
-            cart.push(product);
+            if(!selectedSizes[id]) { alert("ОБЕРІТЬ РОЗМІР!"); return; }
+            cart.push({...products.find(p => p.id === id), size: selectedSizes[id]});
             updateUI();
             togglePanel('cart-panel');
         }
 
         function updateUI() {
-            const badge = document.getElementById('cart-count');
-            badge.innerText = cart.length; badge.style.display = cart.length > 0 ? 'flex' : 'none';
-            
-            const list = document.getElementById('cart-list');
-            let total = 0;
-            list.innerHTML = cart.map((i, index) => {
-                total += i.price;
-                return `
-                <div class="cart-item">
-                    <img src="${i.img}">
-                    <div class="cart-item-info">
-                        <div style="font-weight:700; font-size:0.8rem;">${i.name}</div>
-                        <div style="color:#555; font-size:0.7rem; margin-top:5px;">SIZE: ${i.size}</div>
-                        <div style="font-weight:900; margin-top:10px;">${i.price} UAH</div>
-                    </div>
-                    <i class="fas fa-times" onclick="removeFromCart(${index})" style="cursor:pointer; color:#222;"></i>
-                </div>`;
-            }).join('');
-            
-            document.getElementById('total-price').innerText = `TOTAL: ${total} UAH`;
-            document.getElementById('total-price').style.display = cart.length > 0 ? 'block' : 'none';
+            document.getElementById('cart-count').innerText = cart.length;
+            document.getElementById('cart-count').style.display = cart.length > 0 ? 'flex' : 'none';
+            document.getElementById('cart-list').innerHTML = cart.map((i, idx) => `
+                <div style="padding:10px; border-bottom:1px solid #111; font-size:0.8rem;">
+                    ${i.name} (${i.size}) — ${i.price} UAH
+                </div>
+            `).join('');
             document.getElementById('order-btn').style.display = cart.length > 0 ? 'block' : 'none';
         }
 
-        function removeFromCart(index) { cart.splice(index, 1); updateUI(); }
         function openOrderModal() { togglePanel('cart-panel'); document.getElementById('order-modal').style.display = 'flex'; }
 
         function sendToTelegram() {
             const n = document.getElementById('u-name').value;
             const p = document.getElementById('u-phone').value;
             const c = document.getElementById('u-city').value;
-            if(!n || !p || !c) return;
-
-            let msg = `🏔 NEW ORDER\n\n👤 NAME: ${n}\n📞 PHONE: ${p}\n📍 DEP: ${c}\n\n📦 ITEMS:\n` + 
-                      cart.map(i => `- ${i.name} (SIZE: ${i.size})`).join('\n');
+            let msg = `🏔 ЗАМОВЛЕННЯ\nКлієнт: ${n}\nТел: ${p}\nНП: ${c}\nТовари:\n` + cart.map(i => `- ${i.name} (РOЗМІР: ${i.size})`).join('\n');
 
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                 method: 'POST',
@@ -236,7 +200,6 @@
             }).then(() => {
                 cart = []; updateUI();
                 document.getElementById('order-modal').style.display = 'none';
-                alert("SUCCESSFULLY SENT");
             });
         }
     </script>
