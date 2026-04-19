@@ -24,7 +24,7 @@
         .header-right i { cursor: pointer; font-size: 1.2rem; position: relative; }
         .badge { position: absolute; top: -8px; right: -8px; background: #fff; color: #000; font-size: 0.6rem; width: 15px; height: 15px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-weight: 900; }
 
-        /* SIDEBAR + СОЦМЕРЕЖІ */
+        /* SIDEBAR */
         .sidebar { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: #000; z-index: 7000; transition: 0.4s; padding: 60px 30px; border-right: 1px solid var(--border); }
         .sidebar.active { left: 0; }
         .sidebar p { cursor: pointer; margin-bottom: 25px; font-weight: 700; }
@@ -32,29 +32,31 @@
         .social-links a { color: #fff; text-decoration: none; transition: 0.3s; }
         .social-links a:hover { opacity: 0.6; }
 
-        /* ПАНЕЛІ КOШИКА */
+        /* PANELS */
         .side-panel { position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%; background: #000; z-index: 7000; transition: 0.4s ease; border-left: 1px solid var(--border); padding: 30px; box-sizing: border-box; }
         .side-panel.active { right: 0; }
 
-        /* ТОВАРИ */
+        /* TABS */
         .tabs { display: flex; justify-content: center; gap: 30px; margin: 30px 0; }
         .tab-btn { background: none; border: none; color: #444; font-weight: 900; cursor: pointer; font-size: 1rem; }
         .tab-btn.active { color: #fff; border-bottom: 2px solid #fff; }
 
+        /* PRODUCTS */
         .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 20px; }
         .product-card { background: #000; border: 1px solid #111; text-align: center; padding-bottom: 20px; }
         .product-card img { width: 100%; height: 400px; object-fit: cover; }
         
-        /* РОЗМІРИ */
         .size-picker { display: flex; justify-content: center; gap: 10px; margin: 15px 0; }
         .size-btn { border: 1px solid #333; background: none; color: #fff; padding: 5px 12px; cursor: pointer; font-size: 0.8rem; }
         .size-btn.selected { background: #fff; color: #000; border-color: #fff; }
 
         .buy-btn { background: #fff; color: #000; border: none; width: 90%; padding: 15px; cursor: pointer; font-weight: 900; }
 
+        /* MODAL ОФОРМЛЕННЯ */
         #order-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 8000; align-items: center; justify-content: center; }
         .modal-content { background: #000; padding: 30px; border: 1px solid var(--border); width: 90%; max-width: 350px; text-align: center; }
-        .modal-content input { width: 100%; padding: 12px; margin: 8px 0; background: #111; border: 1px solid #333; color: #fff; box-sizing: border-box; outline: none; }
+        .modal-content input { width: 100%; padding: 12px; margin: 8px 0; background: #111; border: 1px solid #333; color: #fff; box-sizing: border-box; outline: none; text-transform: uppercase; }
+        .modal-content input::placeholder { color: #555; }
     </style>
 </head>
 <body>
@@ -106,9 +108,9 @@
     <div id="order-modal">
         <div class="modal-content">
             <h2 style="margin-bottom:20px;">ОФОРМЛЕННЯ</h2>
-            <input type="text" id="u-name" placeholder="ІМ'Я">
-            <input type="text" id="u-phone" placeholder="ТЕЛЕФОН">
-            <input type="text" id="u-city" placeholder="МІСТО / НП">
+            <input type="text" id="u-name" placeholder="ПІБ">
+            <input type="text" id="u-phone" placeholder="НОМЕР ТЕЛЕФОНУ">
+            <input type="text" id="u-city" placeholder="МІСТО ТА ВІДДІЛЕННЯ НП">
             <button class="buy-btn" onclick="sendToTelegram()">ВІДПРАВИТИ</button>
         </div>
     </div>
@@ -191,6 +193,8 @@
             const n = document.getElementById('u-name').value;
             const p = document.getElementById('u-phone').value;
             const c = document.getElementById('u-city').value;
+            if(!n || !p || !c) return;
+
             let msg = `🏔 ЗАМОВЛЕННЯ\nКлієнт: ${n}\nТел: ${p}\nНП: ${c}\nТовари:\n` + cart.map(i => `- ${i.name} (РOЗМІР: ${i.size})`).join('\n');
 
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
