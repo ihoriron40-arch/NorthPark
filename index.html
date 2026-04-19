@@ -10,7 +10,7 @@
         :root { --bg: #000; --accent: #fff; --gray: #222; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--accent); margin: 0; text-transform: uppercase; overflow-x: hidden; }
 
-        /* --- ЕФЕКТ ПРИ ЗАПУСКУ (З БЛЮРОМ) --- */
+        /* PRELOADER З БЛЮРОМ */
         #preloader { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0, 0, 0, 0.7); 
@@ -38,29 +38,30 @@
         .header-right i { cursor: pointer; font-size: 1.2rem; position: relative; }
         .badge { position: absolute; top: -8px; right: -8px; background: #fff; color: #000; font-size: 0.6rem; width: 15px; height: 15px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-weight: 900; }
 
-        /* SIDEBAR */
+        /* SIDEBAR (РИСКИ) */
         .sidebar { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: #000; z-index: 7000; transition: 0.4s; padding: 60px 30px; border-right: 1px solid var(--gray); }
         .sidebar.active { left: 0; }
         .sidebar p { cursor: pointer; margin-bottom: 25px; font-weight: 700; }
 
-        /* ПАНЕЛІ КOШИКА ТА ОБРАНОГО */
+        /* БІЧНІ ПАНЕЛІ */
         .side-panel { position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%; background: #000; z-index: 7000; transition: 0.4s ease; border-left: 1px solid var(--gray); padding: 30px; box-sizing: border-box; }
         .side-panel.active { right: 0; }
 
-        /* ВКЛАДКИ (НОВИНКИ / РОЗПРОДАЖ) */
+        /* ВКЛАДКИ */
         .tabs { display: flex; justify-content: center; gap: 30px; margin: 30px 0; }
-        .tab-btn { background: none; border: none; color: #444; font-weight: 900; cursor: pointer; font-size: 1rem; letter-spacing: 1px; }
+        .tab-btn { background: none; border: none; color: #444; font-weight: 900; cursor: pointer; font-size: 1rem; }
         .tab-btn.active { color: #fff; border-bottom: 2px solid #fff; }
 
+        /* ТОВАРИ */
         .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 20px; }
         .product-card { background: #000; border: 1px solid #111; text-align: center; }
         .product-card img { width: 100%; height: 400px; object-fit: cover; }
         .buy-btn { background: #fff; color: #000; border: none; width: 100%; padding: 15px; cursor: pointer; font-weight: 900; margin-top: 15px; }
 
-        /* МОДАЛКА */
+        /* МОДАЛКА ОФОРМЛЕННЯ */
         #order-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 8000; align-items: center; justify-content: center; }
         .modal-content { background: #000; padding: 30px; border: 1px solid #222; width: 90%; max-width: 350px; text-align: center; }
-        .modal-content input { width: 100%; padding: 12px; margin: 8px 0; background: #111; border: 1px solid #333; color: #fff; box-sizing: border-box; }
+        .modal-content input { width: 100%; padding: 12px; margin: 8px 0; background: #111; border: 1px solid #333; color: #fff; box-sizing: border-box; outline: none; }
     </style>
 </head>
 <body>
@@ -73,7 +74,7 @@
             <div class="logo" onclick="location.reload()">NORTH PARK</div>
         </div>
         <div class="header-right">
-            <i class="fas fa-search" onclick="alert('Пошук...')"></i>
+            <i class="fas fa-search" onclick="alert('Пошук активується...')"></i>
             <i class="fas fa-heart" onclick="togglePanel('wish-panel')"><span id="wish-count" class="badge">0</span></i>
             <i class="fas fa-shopping-cart" onclick="togglePanel('cart-panel')"><span id="cart-count" class="badge">0</span></i>
         </div>
@@ -83,6 +84,7 @@
         <div onclick="toggleSidebar()" style="text-align:right; cursor:pointer; margin-bottom:30px;"><i class="fas fa-times"></i></div>
         <p onclick="alert('North Park — твій стиль')">ПРО НАС</p>
         <p onclick="alert('Відгуки')">ВІДГУКИ</p>
+        <p onclick="alert('Telegram: @ihor768')">КОНТАКТИ</p>
     </div>
 
     <div class="tabs">
@@ -94,23 +96,25 @@
 
     <div id="cart-panel" class="side-panel">
         <div onclick="togglePanel('cart-panel')" style="text-align:right; cursor:pointer;"><i class="fas fa-times"></i></div>
-        <h2>КОШИК</h2>
+        <h2 style="margin-bottom:20px;">КОШИК</h2>
         <div id="cart-list"></div>
         <button class="buy-btn" id="order-btn" style="display:none;" onclick="openOrderModal()">ОФОРМИТИ ЗАМОВЛЕННЯ</button>
     </div>
 
     <div id="wish-panel" class="side-panel">
         <div onclick="togglePanel('wish-panel')" style="text-align:right; cursor:pointer;"><i class="fas fa-times"></i></div>
-        <h2>ОБРАНЕ</h2>
+        <h2 style="margin-bottom:20px;">ОБРАНЕ</h2>
+        <div style="color:#444; font-size:0.8rem;">ТУТ ПОКИ ПОРОЖНЬО</div>
     </div>
 
     <div id="order-modal">
         <div class="modal-content">
-            <h2>ОФОРМЛЕННЯ</h2>
-            <input type="text" id="u-name" placeholder="ІМ'Я">
-            <input type="text" id="u-phone" placeholder="ТЕЛЕФОН">
-            <input type="text" id="u-city" placeholder="МІСТО / НП">
+            <h2 style="margin-bottom:20px; font-size:1.2rem;">ДАНІ ДОСТАВКИ</h2>
+            <input type="text" id="u-name" placeholder="ПРІЗВИЩЕ ТА ІМ'Я">
+            <input type="text" id="u-phone" placeholder="НОМЕР ТЕЛЕФОНУ">
+            <input type="text" id="u-city" placeholder="МІСТО ТА № ПОШТИ">
             <button class="buy-btn" onclick="sendToTelegram()">ВІДПРАВИТИ</button>
+            <p onclick="document.getElementById('order-modal').style.display='none'" style="cursor:pointer; margin-top:15px; font-size:0.7rem; color:#444;">СКАСУВАТИ</p>
         </div>
     </div>
 
@@ -142,7 +146,7 @@
                 <div class="product-card">
                     <img src="${p.img}">
                     <div style="padding:15px;">
-                        <div>${p.name}</div>
+                        <div style="font-weight:700;">${p.name}</div>
                         <div style="font-weight:900; margin:10px 0;">${p.price} UAH</div>
                         <button class="buy-btn" onclick="addToCart(${p.id})">У КОШИК</button>
                     </div>
@@ -165,25 +169,35 @@
         function updateUI() {
             document.getElementById('cart-count').innerText = cart.length;
             document.getElementById('cart-count').style.display = cart.length > 0 ? 'flex' : 'none';
-            document.getElementById('cart-list').innerHTML = cart.map(i => `<div style="padding:10px; border-bottom:1px solid #111;">${i.name} - ${i.price} UAH</div>`).join('');
+            document.getElementById('cart-list').innerHTML = cart.map(i => `
+                <div style="padding:10px; border-bottom:1px solid #111; font-size:0.8rem;">
+                    ${i.name} — <b>${i.price} UAH</b>
+                </div>
+            `).join('');
             document.getElementById('order-btn').style.display = cart.length > 0 ? 'block' : 'none';
         }
 
-        function openOrderModal() { togglePanel('cart-panel'); document.getElementById('order-modal').style.display = 'flex'; }
+        function openOrderModal() { 
+            togglePanel('cart-panel'); 
+            document.getElementById('order-modal').style.display = 'flex'; 
+        }
 
         function sendToTelegram() {
             const n = document.getElementById('u-name').value;
             const p = document.getElementById('u-phone').value;
             const c = document.getElementById('u-city').value;
-            let msg = `🏔 ЗАМОВЛЕННЯ\nКлієнт: ${n}\nТел: ${p}\nНП: ${c}\nТовари:\n` + cart.map(i => `- ${i.name}`).join('\n');
+            if(!n || !p || !c) return alert("Заповни всі поля!");
+
+            let msg = `🏔 НОВЕ ЗАМОВЛЕННЯ\n\n👤 Клієнт: ${n}\n📞 Тел: ${p}\n📍 Пошта: ${c}\n\n📦 Товари:\n` + cart.map(i => `- ${i.name} (${i.price} UAH)`).join('\n');
 
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ chat_id: CHAT_ID, text: msg })
             }).then(() => {
-                alert("ДЯКУЄМО! ЗАМОВЛЕННЯ ВІДПРАВЛЕНО.");
-                cart = []; updateUI();
+                // Все очищуємо без зайвих вікон на сайті
+                cart = []; 
+                updateUI();
                 document.getElementById('order-modal').style.display = 'none';
             });
         }
